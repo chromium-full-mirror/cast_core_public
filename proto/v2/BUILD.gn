@@ -1,0 +1,65 @@
+# Copyright 2021 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# **** DO NOT EDIT - this file was automatically generated. ****
+
+import("//third_party/cast_core/public/src/proto/proto.gni")
+cast_core_proto_library("cast_message") {
+    sources = ["cast_message.proto"]
+}
+
+cast_core_grpc_library("core_application_service") {
+    sources = ["core_application_service.proto"]
+    deps = [
+        ":cast_message_proto",
+        "//third_party/cast_core/public/src/proto/bindings:api_bindings_proto",
+        "//third_party/cast_core/public/src/proto/common:application_config_proto",
+        "//third_party/cast_core/public/src/proto/common:service_info_proto",
+        "//third_party/cast_core/public/src/proto/metrics:metrics_recorder_proto",
+        "//third_party/cast_core/public/src/proto/v2:url_rewrite_proto",
+        "//third_party/cast_core/public/src/proto/web:message_channel_proto",
+    ]
+}
+
+cast_core_grpc_library("core_message_port_application_service") {
+    sources = ["core_message_port_application_service.proto"]
+    deps = [
+        "//third_party/cast_core/public/src/proto/bindings:api_bindings_proto",
+        "//third_party/cast_core/public/src/proto/web:message_channel_proto",
+    ]
+}
+
+cast_core_grpc_library("core_v2_application_service") {
+    sources = ["core_v2_application_service.proto"]
+    deps = [
+        ":cast_message_proto",
+    ]
+}
+
+cast_core_grpc_library("runtime_application_service") {
+    sources = ["runtime_application_service.proto"]
+    deps = [
+        ":cast_message_proto",
+        "//third_party/cast_core/public/src/proto/v2:url_rewrite_proto",
+        "//third_party/cast_core/public/src/proto/web:message_channel_proto",
+    ]
+}
+
+cast_core_grpc_library("runtime_message_port_application_service") {
+    sources = ["runtime_message_port_application_service.proto"]
+    deps = [
+        "//third_party/cast_core/public/src/proto/web:message_channel_proto",
+    ]
+}
+
+cast_core_grpc_library("runtime_v2_application_service") {
+    sources = ["runtime_v2_application_service.proto"]
+    deps = [
+        ":cast_message_proto",
+    ]
+}
+
+cast_core_proto_library("url_rewrite") {
+    sources = ["url_rewrite.proto"]
+}

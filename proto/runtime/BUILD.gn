@@ -1,0 +1,23 @@
+# Copyright 2021 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# **** DO NOT EDIT - this file was automatically generated. ****
+
+import("//third_party/cast_core/public/src/proto/proto.gni")
+cast_core_grpc_library("runtime_service") {
+    sources = [
+        "runtime_service.proto",
+    ]
+    deps = [
+        "//third_party/cast_core/public/src/proto/common:application_config_proto",
+        "//third_party/cast_core/public/src/proto/common:service_info_proto",
+        "//third_party/cast_core/public/src/proto/v2:url_rewrite_proto",
+    ]
+}
+
+cast_core_grpc_library("media_service") {
+    sources = [
+        "cast_audio_channel_service.proto",
+    ]
+}
