@@ -14,12 +14,12 @@
 
 syntax = "proto3";
 
-package cast.v2;
+package cast.bindings;
 
 option optimize_for = LITE_RUNTIME;
 
 // Cast V2 request definition.
-message CastMessageRequest {
+message CastChannelMessage {
   // Cast sender ID; distinct from virtual connection source ID.
   string sender_id = 1;
   // Cast namespace.
@@ -27,10 +27,7 @@ message CastMessageRequest {
   // Payload.
   oneof payload {
     string payload_utf8 = 3;
-    // NOTE: |payload_binary| is currently unused but is added for potential
-    // future compatibility.
-    bytes payload_binary = 4;
   }
 }
 
-message CastMessageResponse {}
+message CastChannelResponse {}

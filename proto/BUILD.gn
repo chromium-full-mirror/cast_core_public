@@ -23,7 +23,6 @@ proto_library("proto_files") {
   sources = [
     "//third_party/protobuf/src/google/protobuf/duration.proto",
     "//third_party/protobuf/src/google/protobuf/empty.proto",
-    "//third_party/protobuf/src/google/protobuf/timestamp.proto",
   ]
   cc_generator_options = "lite"
   extra_configs = [ ":force_local_well_known_protos" ]
