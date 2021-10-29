@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package cast.platform;
 
-import "google/protobuf/duration.proto";
+import "proto/common/duration.proto";
 import "proto/common/service_info.proto";
 
 option optimize_for = LITE_RUNTIME;
@@ -64,7 +64,7 @@ message GetDeviceInfoResponse {
 message HeartbeatRequest {
   // Period between two heartbeat responses. The Core will wait for double of
   // this time to avoid network glitches. The minimum value is 5 seconds.
-  google.protobuf.Duration heartbeat_period = 1;
+  cast.common.Duration heartbeat_period = 1;
 }
 
 message HeartbeatResponse {}
