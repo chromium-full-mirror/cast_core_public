@@ -198,7 +198,8 @@ class SourceProto {
   void PrintCastCoreHandlerDefinition(
       std::ostream& header, const ServiceDescriptor* service_descriptor) const {
     const std::string service_name = service_descriptor->name();
-    header << "class " << service_name << "Handler {" << std::endl;
+    std::ostringstream method_names;
+    std::ostringstream class_methods;
     for (int i = 0; i < service_descriptor->method_count(); ++i) {
       const MethodDescriptor* method = service_descriptor->method(i);
       if (method->client_streaming()) {
@@ -210,30 +211,35 @@ class SourceProto {
 
       const Descriptor* input = method->input_type();
       const Descriptor* output = method->output_type();
-      const std::string method_name_var = "k" + method->name() + "Method";
-      header << "  private:" << std::endl
-             << "    static constexpr char " << method_name_var << "[] = \""
-             << method->name() << "\";" << std::endl;
-      header << "  public:" << std::endl
-             << "    using " << method->name() << " = ";
+      const std::string method_name_var =
+          "k" + service_name + "_" + method->name() + "_MethodName";
+      method_names << "constexpr char " << method_name_var << "[] = \""
+                   << method->name() << "\";" << std::endl;
+      class_methods << "    using " << method->name() << " = ";
       if (method->server_streaming()) {
-        header << "::cast::utils::GrpcServerStreamingHandler<";
+        class_methods << "::cast::utils::GrpcServerStreamingHandler<";
       } else {
-        header << "::cast::utils::GrpcUnaryHandler<";
+        class_methods << "::cast::utils::GrpcUnaryHandler<";
       }
       const auto request_type = FullTypeName(input->full_name());
       const auto response_type = FullTypeName(output->full_name());
-      header << service_name << ", " << request_type << ", " << response_type
-             << ", " << method_name_var << ">;" << std::endl
-             << std::endl;
+      class_methods << service_name << ", " << request_type << ", "
+                    << response_type << ", " << method_name_var << ">;"
+                    << std::endl;
     }
-    header << "};" << std::endl << std::endl;
+    header << "// " << service_name << " gRPC handler." << std::endl
+           << method_names.str() << std::endl
+           << "class " << service_name << "Handler {" << std::endl
+           << "  public: " << std::endl
+           << class_methods.str() << "};" << std::endl
+           << std::endl;
   }
 
   void PrintCastCoreStubDefinition(
       std::ostream& header, const ServiceDescriptor* service_descriptor) const {
     const std::string service_name = service_descriptor->name();
-    header << "class " << service_name << "Stub : "
+    header << "// " << service_name << " gRPC stub." << std::endl
+           << "class " << service_name << "Stub : "
            << " public ::cast::utils::GrpcStub<" << service_name << "> {"
            << std::endl
            << " public:" << std::endl
@@ -269,7 +275,7 @@ class SourceProto {
         // Add the sync interface defs
         header << ", &SyncInterface::" << method->name();
       }
-      header << ">;" << std::endl << std::endl;
+      header << ">;" << std::endl;
     }
     header << "};" << std::endl << std::endl;
   }
