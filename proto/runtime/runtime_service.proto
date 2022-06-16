@@ -99,6 +99,8 @@ message LaunchApplicationRequest {
   cast.common.ServiceInfo core_application_service_info = 1;
   // CastMedia service info for this application in CastCore.
   cast.common.ServiceInfo cast_media_service_info = 4;
+  // Application session id.
+  string cast_session_id = 5;
 }
 
 // Returned by the runtime in response to a launch application request.

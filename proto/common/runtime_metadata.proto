@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package cast.common;
 
+import "proto/common/duration.proto";
+
 option optimize_for = LITE_RUNTIME;
 
 // Runtime description.
@@ -64,6 +66,22 @@ message ApplicationCapabilities {
   repeated ApplicationMetadata unsupported_applications = 2;
 }
 
+message PrelaunchCapabilities {
+  enum PrelaunchType {
+    // Do not prelaunch runtime.
+    NEVER = 0;
+    // Prelaunch Runtime and keep it alive.
+    ALWAYS = 1;
+  }
+
+  // Prelaunch type of the runtime.
+  PrelaunchType prelaunch_type = 1;
+  // This is the duration between two consecutive Prelaunch requests.
+  // When a Prelaunch request is denied by platform (OEM), CastCore waits for
+  // this duration to retry again.
+  cast.common.Duration polling_frequency = 2;
+}
+
 message RuntimeCapabilities {
   // Media capabilities of the runtime.
   MediaCapabilities media_capabilities = 1;
@@ -71,4 +89,6 @@ message RuntimeCapabilities {
   ApplicationCapabilities application_capabilities = 2;
   // Flags if metrics recording is supported.
   bool metrics_recorder_supported = 4;
+  // Runtime prelaunch capabilities.
+  PrelaunchCapabilities prelaunch_capabilities = 5;
 }
