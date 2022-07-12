@@ -57,7 +57,7 @@ message UpdatePrelaunchTypeRequest {
   // Runtime id.
   string runtime_id = 1;
   // Prelaunch type.
-  cast.common.PrelaunchCapabilities.PrelaunchType prelaunch_type = 2;
+  cast.common.PrelaunchType.Type prelaunch_type = 2;
 }
 
 message UpdatePrelaunchTypeResponse {}
