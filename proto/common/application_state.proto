@@ -42,3 +42,29 @@ message Visibility {
     FULL_SCREEN = 2;
   }
 }
+
+// Application media playback state.
+message MediaPlaybackState {
+  enum Type {
+    UNDEFINED = 0;
+    // Media is playing.
+    PLAYING = 1;
+    // Media is stopped.
+    STOPPED = 2;
+  }
+}
+
+// Reason the application was stopped.
+message StopReason {
+  enum Type {
+    UNDEFINED = 0;            // Added to avoid empty |stop_reason| value.
+    APPLICATION_REQUEST = 1;  // Receiver application stopped itself.
+    IDLE_TIMEOUT = 2;         // Runtime stopped an idle application.
+    USER_REQUEST = 3;         // User closed the application, e.g.
+                              // via remote control or system UI. (Normally this
+                              // is handled by Cast Core).
+    HTTP_ERROR = 4;           // HTTP error while loading the Application. The
+                              // |http_response_code| will be populated.
+    RUNTIME_ERROR = 5;        // Unrecoverable error in the runtime.
+  }
+}
