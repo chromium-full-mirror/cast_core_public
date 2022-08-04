@@ -113,8 +113,8 @@ message ApplicationStoppedRequest {
   // Stop reason.
   common.StopReason.Type stop_reason = 2;
 
-  // HTTP response code if applicable.
-  int32 http_response_code = 3;
+  // Runtime specific error code.
+  int32 error_code = 3;
 }
 
 message ApplicationStoppedResponse {}
