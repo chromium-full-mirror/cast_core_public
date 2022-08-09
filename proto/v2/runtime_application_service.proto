@@ -39,6 +39,9 @@ service RuntimeApplicationService {
   // Sets application visibility. Runtime must support this API if application
   // preloading is supported.
   rpc SetVisibility(SetVisibilityRequest) returns (SetVisibilityResponse);
+
+  // Sets application touch input capability.
+  rpc SetTouchInput(SetTouchInputRequest) returns (SetTouchInputResponse);
 }
 
 message SetUrlRewriteRulesRequest {
@@ -58,3 +61,9 @@ message SetVisibilityRequest {
 }
 
 message SetVisibilityResponse {}
+
+message SetTouchInputRequest {
+  cast.common.TouchInput.Type touch_input = 1;
+}
+
+message SetTouchInputResponse {}

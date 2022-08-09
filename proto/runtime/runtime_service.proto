@@ -106,6 +106,8 @@ message LaunchApplicationRequest {
   cast.common.MediaState.Type media_state = 6;
   // Initial application window visibility.
   cast.common.Visibility.Type visibility = 7;
+  // Initial touch input capability.
+  cast.common.TouchInput.Type touch_input = 8;
 }
 
 // Returned by the runtime in response to a launch application request.

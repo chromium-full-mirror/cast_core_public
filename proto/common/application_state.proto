@@ -68,3 +68,14 @@ message StopReason {
     RUNTIME_ERROR = 5;        // Unrecoverable error in the runtime.
   }
 }
+
+// Application touch input support.
+message TouchInput {
+  enum Type {
+    UNDEFINED = 0;
+    // Touch input is enabled.
+    ENABLED = 1;
+    // Touch input is disabled.
+    DISABLED = 2;
+  }
+}
