@@ -45,6 +45,8 @@ message RuntimeType {
     CAST_LITE = 2;
     // Runtimes native to specific platform (Netflix, YouTube applications etc)
     NATIVE = 3;
+    // Cast Web runtime on Cobalt.
+    CAST_COBALT = 4;
   }
 }
 
