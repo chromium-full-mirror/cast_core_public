@@ -10,6 +10,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -66,10 +67,9 @@ std::string RemoveProtoExtension(const std::string& file_path) {
   return file_path.substr(0, ext_pos);
 }
 
-std::string ReplaceString(const std::string& input,
-                          const std::string& old_token,
+std::string ReplaceString(const std::string& input, const std::string& old_token,
                           const std::string& new_token) {
-  std::string output = input;
+  std::string output(input);
   std::string::size_type pos;
   while ((pos = output.find(old_token)) != std::string::npos) {
     output.replace(pos, old_token.length(), new_token);
@@ -139,10 +139,10 @@ class SourceProto {
     std::string::size_type start_pos = 0;
     std::string::size_type next_pos;
     while ((next_pos = package.find(".", start_pos)) != std::string::npos) {
-      namespaces_.push_back(package.substr(start_pos, next_pos - start_pos));
+      namespaces_.emplace_back(package.substr(start_pos, next_pos - start_pos));
       start_pos = next_pos + 1;
     }
-    namespaces_.push_back(package.substr(start_pos));
+    namespaces_.emplace_back(package.substr(start_pos));
     return true;
   }
 
@@ -209,7 +209,7 @@ class SourceProto {
 
   void PrintCastCoreHandlerDefinition(
       std::ostream& header, const ServiceDescriptor* service_descriptor) const {
-    const std::string service_name = service_descriptor->name();
+    const std::string& service_name = service_descriptor->name();
     std::ostringstream method_names;
     std::ostringstream class_methods;
     for (int i = 0; i < service_descriptor->method_count(); ++i) {
@@ -223,8 +223,9 @@ class SourceProto {
 
       const Descriptor* input = method->input_type();
       const Descriptor* output = method->output_type();
-      const std::string method_name_var =
-          "k" + service_name + "_" + method->name() + "_MethodName";
+      const std::string method_name_var = "k" + std::string(service_name) +
+                                          "_" + std::string(method->name()) +
+                                          "_MethodName";
       method_names << "constexpr char " << method_name_var << "[] = \""
                    << method->name() << "\";" << std::endl;
       class_methods << "    using " << method->name() << " = ";
@@ -249,7 +250,7 @@ class SourceProto {
 
   void PrintCastCoreStubDefinition(
       std::ostream& header, const ServiceDescriptor* service_descriptor) const {
-    const std::string service_name = service_descriptor->name();
+    const std::string& service_name = service_descriptor->name();
     header << "// " << service_name << " gRPC stub." << std::endl
            << "class " << service_name << "Stub : "
            << " public ::cast::utils::GrpcStub<" << service_name << "> {"
@@ -272,7 +273,8 @@ class SourceProto {
 
       const Descriptor* input = method->input_type();
       const Descriptor* output = method->output_type();
-      const std::string method_name_var = "k" + method->name() + "Method";
+      const std::string method_name_var =
+          "k" + std::string(method->name()) + "Method";
       header << "  using " << method->name() << " = ";
       if (method->server_streaming()) {
         header << "::cast::utils::GrpcServerStreamingCall<";
