@@ -114,6 +114,15 @@ message ForegroundBehavior {
   }
 }
 
+message RuntimeAuthentication {
+  enum Type {
+    // No authentication required by default.
+    NO_AUTHENTICATION = 0;
+    // Runtime requires authentication.
+    TOKEN_AUTHENTICATION = 1;
+  }
+}
+
 message RuntimeCapabilities {
   // Media capabilities of the runtime.
   MediaCapabilities media_capabilities = 1;
@@ -123,4 +132,6 @@ message RuntimeCapabilities {
   PrelaunchCapabilities prelaunch_capabilities = 5;
   // Defines when to bring runtime to foreground.
   ForegroundBehavior.Type foreground_behavior = 6;
+  // Defines the authentication type of the runtime.
+  RuntimeAuthentication.Type runtime_authentication = 7;
 }
