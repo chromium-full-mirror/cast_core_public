@@ -135,7 +135,7 @@ class SourceProto {
                 << proto_file_path_ << std::endl;
     }
 
-    const std::string& package = file_descriptor_->package();
+    const std::string_view package = file_descriptor_->package();
     std::string::size_type start_pos = 0;
     std::string::size_type next_pos;
     while ((next_pos = package.find(".", start_pos)) != std::string::npos) {
