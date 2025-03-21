@@ -67,7 +67,7 @@ std::string RemoveProtoExtension(const std::string& file_path) {
   return file_path.substr(0, ext_pos);
 }
 
-std::string ReplaceString(const std::string& input, const std::string& old_token,
+std::string ReplaceString(std::string_view input, const std::string& old_token,
                           const std::string& new_token) {
   std::string output(input);
   std::string::size_type pos;
@@ -79,8 +79,8 @@ std::string ReplaceString(const std::string& input, const std::string& old_token
 
 class SimpleErrorCollector : public MultiFileErrorCollector {
  public:
-  void AddError(const std::string& filename, int line, int column,
-                   const std::string& message) override {
+  void RecordError(std::string_view filename, int line, int column,
+                   std::string_view message) override {
     std::cerr << "[ERROR] " << filename << ", Line " << line << ", Column "
               << column << ": " << message << std::endl;
   }
@@ -209,7 +209,7 @@ class SourceProto {
 
   void PrintCastCoreHandlerDefinition(
       std::ostream& header, const ServiceDescriptor* service_descriptor) const {
-    const std::string& service_name = service_descriptor->name();
+    const std::string_view service_name = service_descriptor->name();
     std::ostringstream method_names;
     std::ostringstream class_methods;
     for (int i = 0; i < service_descriptor->method_count(); ++i) {
@@ -250,7 +250,7 @@ class SourceProto {
 
   void PrintCastCoreStubDefinition(
       std::ostream& header, const ServiceDescriptor* service_descriptor) const {
-    const std::string& service_name = service_descriptor->name();
+    const std::string_view service_name = service_descriptor->name();
     header << "// " << service_name << " gRPC stub." << std::endl
            << "class " << service_name << "Stub : "
            << " public ::cast::utils::GrpcStub<" << service_name << "> {"
@@ -294,7 +294,7 @@ class SourceProto {
     header << "};" << std::endl << std::endl;
   }
 
-  static std::string FullTypeName(const std::string& proto_type_name) {
+  static std::string FullTypeName(std::string_view proto_type_name) {
     return "::" + ReplaceString(proto_type_name, ".", "::");
   }
 
